@@ -1,6 +1,8 @@
-struct sink;
-struct stringHead
+#ifndef STRING26_H
+#define STRING26_H
 
-void string.append()
+struct Letter;
+
+void changeLetter();
 
 #endif
