@@ -10,19 +10,8 @@
 
 
 
-typedef struct Letter {   // 9 bytes total, that are next to each other
-    char data;             // 1 byte
-    struct Letter *next;   // 8 bytes
-} Letter;
 
 
-// Modify content of letter
-void changeLetter(Letter *l, char newChar) {
-    if (l!=NULL) {
-        l -> data = newChar;
-    }
-    else perror("Error");
-}
 
 // Modify pointer of letter
 void changePointer(Letter *l, Letter *newAddy) {
