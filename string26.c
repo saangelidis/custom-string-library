@@ -32,17 +32,28 @@ void changePointer(Letter *l, Letter *newAddy) {
     else perror("Error");
 }
 
+// Make new string
+void newString(const char str[]) {
+    if (str != NULL) continue;
+    else perror("Error");
 
-void newString(const char str, int size = sizeof(str)) {
-    for (int i = 0; i < size; i++)
+    Letter *start = NULL;
+    Letter *prev = NULL;
+
+    for (int i = 0; i != '\0'; i++)
     {
         // allocate memory?
-
         Letter *l = (Letter *)malloc(sizeof(Letter));
-        
+        l->data = str[i];
+        l->next = NULL;
+
         if (i == 0) {
-            Letter head
+            head = l;
         }
+        else {
+            prev->next = l;
+        }
+        prev = l;
     }
 }
 
