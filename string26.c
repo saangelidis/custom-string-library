@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <sidlib.h>
+#include <stdlib.h>
     // get string
     // make a bunch of chars
 
@@ -50,6 +50,7 @@ void newString(const char str[]) {
         if (i == 0) {
             head = l;
         }
+
         else {
             prev->next = l;
         }
