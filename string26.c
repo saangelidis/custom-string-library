@@ -1,62 +1,57 @@
 #include <stdio.h>
 #include <stdlib.h>
-    // get string
-    // make a bunch of chars
-
-    // have them point at one and other
-        // for each char, 2 hex/2 bytes -> one stores char the next one points to the address
-
-// basically building a self referential structure
+#include "string26.h"
 
 
+typedef struct String {
+    const char *letters;
+    size_t count;
+    size_t capacity;
+} String;
 
-
-
-
-// Modify pointer of letter
-void changePointer(Letter *l, Letter *newAddy) {
-    if (l!=NULL) {
-        l -> next = newAddy; 
-    }
-    else perror("Error");
-}
 
 // Make new string
-void newString(const char str[]) {
-    if (str != NULL) continue;
-    else perror("Error");
+String newStr(const char* l, size_t c, size_t s) {
 
-    Letter *start = NULL;
-    Letter *prev = NULL;
+    String *str = (String*)malloc(sizeof(String));
+    str.letters = l;
+    str.count = c;
+    str.capacity = s;
+    return str;
 
-    for (int i = 0; i != '\0'; i++)
-    {
-        // allocate memory?
-        Letter *l = (Letter *)malloc(sizeof(Letter));
-        l->data = str[i];
-        l->next = NULL;
+}
 
-        if (i == 0) {
-            head = l;
-        }
+// Convert c string to regular string
+String cStrToStr26(char * cs) {
 
-        else {
-            prev->next = l;
-        }
-        prev = l;
-    }
+    String newStr;
+    newStr.letters = cs;
+    newStr.count = sizeof(cs);
+    
 }
 
 
-// add characters after OR before
-void string.append() { // positions: 0 (start), 1-[n-2] , n-1 (end) 
-    
-    // backward loop of defining 
-    
-    // allocate new 9 bytes
+// add characters
+void strAppend(String s, char *x, bool Behind) {  
 
-    // update address of Head
+    // string capacity, vs (current size + size of string to be added)
+    // bigger -> realloc and double mem, else -> proceed
 
-    // new 9 bytes -> 1 (char), 8 (pointer to tail's address)
+    do{
+        if (s.count >= s.capacity) { 
+        if (s.capacity==0) s.capacity = 256;
+        else s.capacity *= 2;
+        
+        // reallocate memory
+        s.items = realloc(s.items, s.capacity*sizeof(*s.items));
+        }
 
+    s.letters[s.count++] = x;
+    } while(0)
+
+}
+
+void deleteStr(String *s) {
+    free(s->data);
+    free(s);
 }

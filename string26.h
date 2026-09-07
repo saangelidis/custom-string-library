@@ -1,19 +1,20 @@
-#ifndef STRING26_H
-#define STRING26_H
+#ifndef STRING_26
+#define STRING_26
+
+#include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+
+typedef struct String String;
+
+String newStr(const char* l, size_t c, size_t s);
+
+String cStrToStr26(char * cs);
+
+void strAppend(String *s, char* x);
+
+void deleteStr(String *s);
+
+
 #endif
-
-typedef struct String {
-    const char **letters;
-    size_t count;
-    size_t capacity;
-} String;
-
-#define strAppend(s, x)\
-   do{\
-    if (s.count >= s.capacity) {\ 
-        if (s.capacity==0) s.capacity = 256;\
-        else s.capacity *= 2;\
-        s.items = realloc(s.items, s.capacity*sizeof(*s.items));\
-    }\
-    s.letters[s.count++] = x;\
-} while(0)
