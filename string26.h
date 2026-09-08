@@ -8,13 +8,14 @@
 
 typedef struct String String;
 
-String newStr(const char* l, size_t c, size_t s);
+String newStr(const char* l, size_t c);
 
-String cStrToStr26(char * cs);
+void strAppend(String *s, char* x, int pos, bool Behind);
 
-void strAppend(String *s, char* x);
+void strRemoveChunk(String s, char *x, int pos, int chunkSize);
 
-void deleteStr(String *s);
+void strDelete(String *s);
 
+void strPrint(String *s);
 
 #endif

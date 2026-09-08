@@ -4,8 +4,12 @@
 
 int main () {
 
-    char fkst[20] = "making me suffer!";
-    printf("This project is %s",fkst);
-    
+
+    String test = newStr("amazing and ");
+
+
+
+    printf("This project is %s",test->*letters);
+
     return 0;
 }
