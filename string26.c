@@ -3,12 +3,6 @@
 #include <stdlib.h>
 #include <string.h> // built on top of string.h
 
-typedef struct String {
-    char *letters; // pointer to string's first letter
-    size_t count;        // how m
-    size_t capacity;     //
-} String;
-
 
 // Make new string
 String *newStr(const char* l) {
