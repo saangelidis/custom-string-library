@@ -4,30 +4,42 @@
 
 
 typedef struct String {
-    const char *letters;
-    size_t count;
-    size_t capacity;
+    char *letters; // pointer to string's first letter
+    size_t count;        // how m
+    size_t capacity;     //
 } String;
 
 
+
+
 // Make new string
-String newStr(const char* l) {
-
-    String *str = (String*)malloc(sizeof(String));
-
-    // assign head pointer to letter var
-    str->letters = l;
-
-    // define size of string (i.e. abc is:  [a, b, c, \0,] )
+String *newStr(const char* l) {
+    /* allocate memory the size of a string struct
     
-    size_t c = sizeof(*str->letters);
+    */
+    String *str = (String*)malloc(sizeof(String));
+    if (str==NULL){ 
+        perror("Allocation failed.");
+        free(str);
+        return NULL;
+    }
+    str->letters = l; // assign head pointer to letter var
 
+    // define size of string (i.e. abc is:  [a, b, c, \0,] )    
+    size_t c = 0;
+    while(l[c] != 0){
+        c++;
+    }
+    
     str->count = c;
     str->capacity = c;
 
-    return *str;
+    return str;
 
 }
+
+
+
 
 // add characters
 void strAppend(String *s, char *x, int pos, bool Behind) {  
@@ -67,6 +79,7 @@ void strRemoveChunk(String s, char *x, int pos, int chunkSize)
 void strDelete(String *s) {
     free(s->letters);
     free(s);
+    s=NULL;
 }
 
 void strPrint(String *s) {

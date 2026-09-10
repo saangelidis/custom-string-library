@@ -8,7 +8,7 @@
 
 typedef struct String String;
 
-String newStr(const char* l, size_t c);
+String *newStr(const char *l);
 
 void strAppend(String *s, char* x, int pos, bool Behind);
 

@@ -4,12 +4,12 @@
 
 int main () {
 
+    char test[] = "dead";
+    printf("Old string: %s", test);
 
-    String test = newStr("amazing and ");
+    char *ptr = test;
 
-
-
-    printf("This project is %s",test->*letters);
+    String *DS = newStr(ptr);
 
     return 0;
 }
