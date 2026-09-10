@@ -4,12 +4,10 @@
 
 int main () {
 
-    char test[] = "dead";
-    printf("Old string: %s", test);
 
-    char *ptr = test;
+    String *DS = newStr("listening");
+    
 
-    String *DS = newStr(ptr);
-
+    printf("The string is %s, its size is %zu, and its capacity is %zu\n", DS->letters,DS->count,DS->capacity);
     return 0;
 }

@@ -6,7 +6,11 @@
 #include <stdbool.h>
 
 
-typedef struct String String;
+typedef struct String {
+    char *letters; // pointer to string's first letter
+    size_t count;        // how m
+    size_t capacity;     //
+} String;
 
 String *newStr(const char *l);
 

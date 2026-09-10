@@ -1,7 +1,7 @@
+#include "string26.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "string26.h"
-
+#include <string.h> // built on top of string.h
 
 typedef struct String {
     char *letters; // pointer to string's first letter
@@ -10,35 +10,44 @@ typedef struct String {
 } String;
 
 
-
-
 // Make new string
 String *newStr(const char* l) {
-    /* allocate memory the size of a string struct
     
-    */
-    String *str = (String*)malloc(sizeof(String));
+    // allocate memory the size of a string struct
+    String *str = malloc(sizeof(*str));
+    
+    // error handling
     if (str==NULL){ 
         perror("Allocation failed.");
         free(str);
         return NULL;
     }
-    str->letters = l; // assign head pointer to letter var
-
-    // define size of string (i.e. abc is:  [a, b, c, \0,] )    
-    size_t c = 0;
-    while(l[c] != 0){
-        c++;
-    }
     
-    str->count = c;
-    str->capacity = c;
+    // initialize var to get string size
+    size_t letterLength = 0;
+
+    // get string size
+    while (l[letterLength] != '\0') letterLength++;
+
+    // allocate memory for str
+    str->letters = malloc(sizeof(letterLength));
+    
+    // error handling
+    if (str->letters==NULL){ 
+        perror("Allocation failed.");
+        free(str->letters);
+        return NULL;
+    }
+
+    // copy l into str->letters
+
+    strcpy(str->letters,l);
+
+    str->count = letterLength;
+    str->capacity = letterLength+1;
 
     return str;
-
 }
-
-
 
 
 // add characters
@@ -62,8 +71,7 @@ void strAppend(String *s, char *x, int pos, bool Behind) {
 
 // remove a chunk from a string
 
-void strRemoveChunk(String s, char *x, int pos, int chunkSize)
-{
+void strRemoveChunk(String s, char *x, int pos, int chunkSize) {
     do {
         // look at pos, count chunk size
             // if chunk size at pos is less than the rest of the string
@@ -83,5 +91,7 @@ void strDelete(String *s) {
 }
 
 void strPrint(String *s) {
+
     printf("%s",s->letters);
+
 }
