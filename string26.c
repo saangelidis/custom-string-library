@@ -66,33 +66,43 @@ void strAppend(String *s, char *x, int pos, bool Behind) {
 // remove a chunk from a string
 
 String *strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range of elements to be deleted
+    
+    // if pos negative, pos = s->capacity - pos
+    if (pos < 0) pos = s->capacity-pos;
+
     // if chunk size at pos is less than the rest of the string
-    if (((pos + chunk) < s->capacity) && pos > 0) {
+    if ((pos + chunk) < s->capacity) {
         
-        // go to position   
+        // new str   
         char *i = s->letters;
+        size_t tempPos = pos;
 
+        // move everything after [pos, pos+chunk] "chunk" registers back
+        do {
+            i[tempPos] = i[tempPos+chunk];    
+        } while (*i[tempPos+chunk] != "\0");
 
-        // move everything after [pos, pos+chunkSize] "chunkSize" registers back
-        
-        
+        char *dest = NULL;
+        strcpy(dest, i);
+        strDelete(s);
+        return newStr(dest);
     }
+
     // if chunk size is greater than capacity
-    else if (((pos + chunk) > s->capacity) && (pos == 0)) {
+    else if ((pos + chunk) > s->capacity) && (pos == 0) {
         strDelete(s);
     }   
     // else ((chunkSize + pos) >= s->capacity)
-    else {
+    else if ((pos+chunk)> s->capacity) {
+        
         s->letters[pos] = '\0';
         // 
         char *dest = NULL;
+
         // copy contents
         strcpy(dest, s->letters);
-        
         strDelete(s);
-        
         return newStr(dest);
-
     }
 }
 
