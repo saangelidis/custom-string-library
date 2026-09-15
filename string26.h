@@ -8,15 +8,15 @@
 
 typedef struct String {
     char *letters; // pointer to string's first letter
-    size_t count;        // how m
-    size_t capacity;     //
+    size_t count;        // size 
+    size_t capacity;     // for realloc
 } String;
 
 String *newStr(const char *l);
 
-void strAppend(String *s, char* x, int pos, bool Behind);
+void strAppend(String *s, char* x, size_t pos);
 
-void strRemoveChunk(String s, char *x, int pos, int chunkSize);
+String *strRemoveChunk(String *s, size_t pos, size_t chunkSize);
 
 void strDelete(String *s);
 
