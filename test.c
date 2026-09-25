@@ -21,5 +21,9 @@ int main () {
     
     printf("The string before adding letters is: %s",newTest->letters);
 
+    strAppend(newTest, "cki",2);
+
+    printf("The string after the append is: %s", newTest->letters);
+
     return 0;
 }

@@ -61,20 +61,24 @@ void strAppend(String *s, char *x, size_t pos) {
     // concatenate if pos is out of range
     if (pos >= s->count) strcat(s->letters, x);
       
-    else {
-      
-      // move every element after pos, including the NULL terminator, "sizeof_x" positions ahead
+    else { 
+    // move every element after pos, including the NULL terminator, "lenx" positions ahead
+      size_t tempPos = pos;
       do {
-        s->letters[pos+lenx] = s->letters[pos];   
-      } while (s->letters != NULL);     
+      // write item from 'pos' into 'pos+lenx'
+      s->letters[tempPos+lenx] = s->letters[tempPos];
+      // go to next item
+      tempPos++;
+    } while (s->letters[tempPos+lenx] != '\0');
     
       // place the new letters at pos and ahead
-      while (*x) {
-        s->letters[pos] = *x;
+      do {
+        (s->letters)[pos] = *x;
         pos++;
         *x++;
-      }
+      } while (*x);
     }
+    // deallocate x
     free(x);
 }
 
@@ -93,9 +97,11 @@ String *strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the ra
 
         // move everything after [pos, pos+chunk] "chunk" registers back
         do {
-            i[pos] = i[pos+chunk];
+            
+            
+
             pos++;
-        } while (i[pos+chunk] != "\0");
+        } while (*i != NULL);
 
         char *dest = NULL;
         strcpy(dest, i);
