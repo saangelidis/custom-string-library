@@ -50,14 +50,26 @@ void strAppend(String *s, char *x, size_t pos) {
     // string capacity, vs (current size + size of string to be added)
     // bigger -> realloc and double mem, else -> proceed
     size_t lenx = sizeof(*x);
+    
+    // if new string doesnt fit in capacity
     if (s->count + lenx >= s->capacity) { 
-      if (s->capacity==0) s->capacity = s->count + sizeof(*x); // if capacity is uninitialized, make it the size of the string + the chunk to be added
-      else s->capacity *= 2;
+        // if capacity is 0
+        if (s->capacity <= 0) s->capacity = s->count + sizeof(*x); // if capacity is uninitialized, make it the size of the string + the chunk to be added
+        // if it just don't fit x2 the size
+        else s->capacity *= 2;
         
-          // reallocate memory
-      s->letters = realloc(s->letters, s->capacity*sizeof(*s->letters));
+        size_t newSizeOfString = s->capacity*sizeof(*s->letters)
+
+        // make the size x2
+        char tmpLet[] = s->letters;
+        int *tmpMem = realloc(s->letters, newSizeOfString);
+        
+        s->letters = tmpMem;
+        
+        // why is s an integer now?
     }
 
+    printf('in strappend: %s',s->letters);
     // concatenate if pos is out of range
     if (pos >= s->count) strcat(s->letters, x);
       
@@ -67,6 +79,7 @@ void strAppend(String *s, char *x, size_t pos) {
       do {
       // write item from 'pos' into 'pos+lenx'
       s->letters[tempPos+lenx] = s->letters[tempPos];
+      printf("%c",s->letters[tempPos+lenx]);
       // go to next item
       tempPos++;
     } while (s->letters[tempPos+lenx] != '\0');
@@ -98,10 +111,11 @@ String *strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the ra
         // move everything after [pos, pos+chunk] "chunk" registers back
         do {
             
-            
+            printf("FEATURE IS NOT IMPLEMENTED");
+            break;
 
             pos++;
-        } while (*i != NULL);
+        } while (1);
 
         char *dest = NULL;
         strcpy(dest, i);
