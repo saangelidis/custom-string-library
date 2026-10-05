@@ -16,7 +16,7 @@ String *newStr(const char *l);
 
 void strAppend(String *s, char* x, size_t pos);
 
-String *strRemoveChunk(String *s, size_t pos, size_t chunkSize);
+void strRemoveChunk(String *s, size_t pos, size_t chunkSize);
 
 void strDelete(String *s);
 
