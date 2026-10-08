@@ -44,6 +44,13 @@ String *newStr(const char* l) {
 }
 
 
+void testPoints(String *s) {
+
+  char * tmp = s->letters;
+  printf("fuck this shit %s \n", tmp);
+  free(tmp);
+}
+
 // add characters
 void strAppend(String *s, char *x, size_t pos) {  
 
@@ -51,9 +58,9 @@ void strAppend(String *s, char *x, size_t pos) {
     // bigger -> realloc and double mem, else -> proceed
 	
     	// size of string x
-	size_t lenx = sizeof(*x);
+	  size_t lenx = sizeof(*x);
     	// Pointer to addy of s->letters because it (s->l) will be overrided
-	 char* tmpLet = s->letters;
+	  char* tmpLet = s->letters;
     
     // How to handle mem?
     // REALLOC if not enough memory
@@ -64,7 +71,7 @@ void strAppend(String *s, char *x, size_t pos) {
         else s->capacity *= 2;
         
 	      // size of final string
-        size_t newSizeOfString = s->capacity*sizeof(*s->letters);
+        size_t newSizeOfString = s->capacity*sizeof(s->letters);
 	
 	      // reallocate memory for letters of s
         s->letters = (char *) realloc(s->letters, newSizeOfString);
@@ -79,7 +86,7 @@ void strAppend(String *s, char *x, size_t pos) {
 	  // add the old letters
       strcat(s->letters, tmpLet);
       // remove null terminator
-      (s->letters)[sizeof(s->letters)] = ' ';
+      // s->letters sizeof(s->letters)-1 = ' ';
       // add the new word x
       strcat(s->letters, x); // x adds the null terminator as well?
       strcat(s->letters, '\0');
@@ -121,17 +128,17 @@ void strAppend(String *s, char *x, size_t pos) {
 	} while (*remaining != '\0');
 	
       	// free all defined inside else loop	
-    	free(tmpAddrS);
-	tmpAddrS = NULL;
+       	free(tmpAddrS);
+	      tmpAddrS = NULL;
         free(remaining);
-    	remaining = NULL;
-    	free(tmpLet);
+      	remaining = NULL;
+      	free(tmpLet);
       	tmpLet = NULL;
 	
 	// update string size
       	s->count = sizeof(s->letters);
       }
-    // deallocate x + pointers
+     //deallocate x + pointers
     free(x);
     x = NULL;
 
@@ -150,7 +157,7 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
 
         // new pointer to letters
         char* start  = s->letters + pos;         // points to (s->letters)[pos]
-	char* end    = s->letters + pos + chunk; // points to end of pos+chunk
+	      char* end    = s->letters + pos + chunk; // points to end of pos+chunk
 
 	// move everything after [pos, pos+chunk] "chunk" registers back
 	// (s->letters)[pos] = (s->letters)[pos+chunk]
@@ -163,8 +170,9 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
 		end++;
         };
 	// free pointers
-	free(start);
-	free(end);
+	//free(start);
+	//free(end);
+   
 
 	//
 	//
@@ -182,9 +190,15 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
     else if ((pos+chunk)> s->capacity) {
         
         char * tmp =  s->letters + pos;
-	*tmp = '\0';
-	free(tmp);
+	      *tmp = '\0';
+  
+    // get new size 
+   	free(tmp);
     }
+    size_t size = 0;
+    size = s->count - chunk;
+    s->count = size;
+
 }
 
 void strDelete(String *s) {

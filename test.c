@@ -9,23 +9,25 @@ int main () {
 
     printf("The string is %s, its size is %zu, and its capacity is %zu\n", DS->letters,DS->count,DS->capacity);
     
-    //    DS = strRemoveChunk(DS, 6, 3);
+    
+    strRemoveChunk(DS, 4, 2);
 
-    // printf("After chunk removal, The string is %s, its size is %zu, and its capacity is %zu\n", DS->letters,DS->count,DS->capacity);
+    printf("After chunk removal, The string is %s, its size is %zu, and its capacity is %zu\n", DS->letters,DS->count,DS->capacity);
     
-        String *newTest = newStr("fun");
+    String *newTest = newStr("fun");
     
-    printf("The string before adding letters is: %s",newTest->letters);
     
+    testPoints(newTest);
+
     // passing a string pointer, a string
-    strAppend(newTest, "cki",2);
+//    strAppend(newTest, "cki",2);
 
-    printf("The string after the append is: %s", newTest->letters);
+ //   printf("The string after the append is: %s", newTest->letters);
     
 
     strDelete(DS);
     
-    printf("After deletion: %s\n",DS->letters);
+ //   printf("After deletion: %s\n",DS->letters);
 
 
     return 0;

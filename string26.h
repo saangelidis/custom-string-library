@@ -14,6 +14,8 @@ typedef struct String {
 
 String *newStr(const char *l);
 
+void testPoints(String *s);
+
 void strAppend(String *s, char* x, size_t pos);
 
 void strRemoveChunk(String *s, size_t pos, size_t chunkSize);
