@@ -12,7 +12,7 @@ typedef struct String {
     size_t capacity;     // for realloc
 } String;
 
-String *newStr(const char *l);
+String *newStr(char *l);
 
 void stringInfo(String *s);
 

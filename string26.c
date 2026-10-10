@@ -1,62 +1,69 @@
 #include "string26.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> // built on top of string.h
-
 
 // Make new string
-String *newStr(const char* l) {
+String *newStr(char* l) {
     
-    // allocate memory the size of a string struct
-    String *str = malloc(sizeof(*str));
+    	// allocate memory the size of a string struct
+    	String *str = malloc(sizeof(*str));
     
-    // error handling
-    if (str==NULL){ 
-        perror("Allocation failed.");
-        free(str);
-        return NULL;
-    }
+    	// error handling
+    	if (str==NULL){ 
+        	perror("Allocation failed.");
+        	free(str);
+        	return NULL;
+    	}
     
-    // initialize var to get string size
-    size_t letterLength = 0;
+	// initialize var to get string size
+    	size_t letterLength = 0;
 
-    // get string size
-    while (l[letterLength] != '\0') letterLength++;
-
-    // allocate memory for str
-    str->letters = malloc(sizeof(letterLength));
+    	// get string size
+	while (l[letterLength] != '\0') letterLength++;
+		letterLength++;
+	    	// allocate memory for str
+	    	str->letters = malloc(sizeof(letterLength));
     
-    // error handling
-    if (str->letters==NULL){ 
-        perror("Allocation failed.");
-        free(str->letters);
-        return NULL;
-    }
+	// error handling
+	if (str->letters==NULL){ 
+        	perror("Allocation failed.");
+	        free(str->letters);
+        	return NULL;
+    	}
 
-    // copy l into str->letters
+    	// copy l into str->letters
+	
+	char* tmp  = str->letters;
+	bool finish = false;
+	
+	while (!finish) {
+		// 
+		*tmp = *l;
+        	if (*l=='\0') finish = true;
+		tmp++;
+		l++;
+        }
 
-    strcpy(str->letters,l);
+    	str->count = letterLength;
+    	str->capacity = letterLength;
 
-    str->count = letterLength;
-    str->capacity = letterLength+1;
-
-    return str;
+    	return str;
 }
 
 
 void stringInfo(String *s) {
-  printf("String->letters:  %s \n",s->letters);
-  printf("String->count: %u \n", s->count);
-  printf("String->capacity: %u\n",s->capacity);
+	printf("String->letters:  %s \n",s->letters);
+  	printf("String->count: %u \n", s->count);
+	printf("String->capacity: %u\n",s->capacity);
 }
 
 size_t strLen(char * x) {
+// FUTURE: implement bool variable to include or not include NULL term
 	size_t length = 0;
 	do {
 		length++;
 		x++;
 	} while (*x != '\0');
-// implement bool variable to include or not include NULL term
 	length++;
 	
 	return length;
@@ -72,9 +79,7 @@ void strAppend(String *s, char *x, size_t pos) {
     	//
     	// REALLOC if not enough memory
 	if (s->count + xLength >= s->capacity) { 
-        	if (s->capacity <= 0) s->capacity = s->count + xLength;       // if capacity is uninitialized (0), make it the size of the string + the chunk to be added
-		else s->capacity *= 2; 						 // if it just don't fit x2 the size
-	
+        	s->capacity = s->count + xLength-1;
 		// reallocate memory for letters of s
 	        s->letters = (char *) realloc(s->letters, s->capacity);
         
@@ -108,9 +113,7 @@ void strAppend(String *s, char *x, size_t pos) {
 
 	*traverser = '\0';	
 	
-		//free(x);
-		//x = NULL;
-   	}
+	}
    	
 	// POSITIONAL ADD if pos is in range
     	else { 
@@ -158,14 +161,11 @@ void strAppend(String *s, char *x, size_t pos) {
 		// place terminator
 		*traverser = '\0';
 
-      		
-       	
-			// update string size
-      	
-      
-   	 } // end else
-	s->count = sizeof(s->letters) - 1;
-} // end function
+       	 } 
+
+	// update string size
+	s->count = strLen(s->letters);
+} 
 
 // remove a chunk from a string
 void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range of elements to be deleted
@@ -192,12 +192,7 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
 		start++;
 		end++;
         };
-	// free pointers
-	//free(start);
-	//free(end);
-   
-  
-	// could add possible memory reallocation here if we need to conserve mem.
+	// FUTURE: could add possible memory reallocation here if we need to conserve mem.
   
     }
 
@@ -223,7 +218,5 @@ void strDelete(String *s) {
 }
 
 void strPrint(String *s) {
-    while ((*s->letters) != '\0') {
-	    printf("%c",s->letters);
-    }
+   printf("%s",s->letters); 
 }
