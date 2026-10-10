@@ -22,7 +22,7 @@ String *newStr(char* l) {
 	while (l[letterLength] != '\0') letterLength++;
 		letterLength++;
 	    	// allocate memory for str
-	    	str->letters = malloc(sizeof(letterLength));
+	    	str->letters = malloc(letterLength);
     
 	// error handling
 	if (str->letters==NULL){ 
