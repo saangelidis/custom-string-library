@@ -4,31 +4,42 @@
 
 int main () {
 
+	String *DS = newStr("listening");
 
-    String *DS = newStr("listening");
+	printf("Initial string: \n");
+	stringInfo(DS);
 
-    printf("The string is %s, its size is %zu, and its capacity is %zu\n", DS->letters,DS->count,DS->capacity);
-    
-    
-    strRemoveChunk(DS, 4, 2);
+     	// test remove
+	strRemoveChunk(DS, 4, 2);
 
-    printf("After chunk removal, The string is %s, its size is %zu, and its capacity is %zu\n", DS->letters,DS->count,DS->capacity);
-    
-    String *newTest = newStr("fun");
-    
-    
-    testPoints(newTest);
-
-    // passing a string pointer, a string
-//    strAppend(newTest, "cki",2);
-
- //   printf("The string after the append is: %s", newTest->letters);
+	printf("\nPost first chunk removal: \n");
+	stringInfo(DS);
+    	
+	// test remove
+	strRemoveChunk(DS, 4, 1000);
+	
+	printf("\nPost second chunk removal: \n");
+	stringInfo(DS);
     
 
-    strDelete(DS);
+
+
+    	String *newTest = newStr("fun");	
+	printf("\nNew string: \n");
+	stringInfo(newTest);
+
+	// test concat function 
+    	strAppend(newTest, " shit!",1000);
+	printf("\nNew string after first append:\n");
+	stringInfo(newTest);
+
+    	// test inside part
+    	strAppend(newTest, "cki",2);
+    	printf("\nNew string after second append:\n");
+	stringInfo(newTest);
     
- //   printf("After deletion: %s\n",DS->letters);
-
-
-    return 0;
+	// test delete
+    	strDelete(DS);
+    	printf("After deletion: %s\n",DS->letters); // should cause segfault
+    	return 0;
 }

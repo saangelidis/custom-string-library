@@ -14,7 +14,9 @@ typedef struct String {
 
 String *newStr(const char *l);
 
-void testPoints(String *s);
+void stringInfo(String *s);
+
+size_t strLen(char * x);
 
 void strAppend(String *s, char* x, size_t pos);
 

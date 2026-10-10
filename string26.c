@@ -44,105 +44,128 @@ String *newStr(const char* l) {
 }
 
 
-void testPoints(String *s) {
+void stringInfo(String *s) {
+  printf("String->letters:  %s \n",s->letters);
+  printf("String->count: %u \n", s->count);
+  printf("String->capacity: %u\n",s->capacity);
+}
 
-  char * tmp = s->letters;
-  printf("fuck this shit %s \n", tmp);
-  free(tmp);
+size_t strLen(char * x) {
+	size_t length = 0;
+	do {
+		length++;
+		x++;
+	} while (*x != '\0');
+// implement bool variable to include or not include NULL term
+	length++;
+	
+	return length;
 }
 
 // add characters
 void strAppend(String *s, char *x, size_t pos) {  
 
-    // string capacity, vs (current size + size of string to be added)
-    // bigger -> realloc and double mem, else -> proceed
+    	size_t xLength = strLen(x);    // size of string x including '\0' null terminator
+ 	char * tmpLet = s->letters;  // pointer to the first letter of string
 	
-    	// size of string x
-	  size_t lenx = sizeof(*x);
-    	// Pointer to addy of s->letters because it (s->l) will be overrided
-	  char* tmpLet = s->letters;
-    
-    // How to handle mem?
-    // REALLOC if not enough memory
-    if (s->count + lenx >= s->capacity) { 
-        // if capacity is 0
-        if (s->capacity <= 0) s->capacity = s->count + sizeof(*x); // if capacity is uninitialized, make it the size of the string + the chunk to be added
-        // if it just don't fit x2 the size
-        else s->capacity *= 2;
+	// Memory check
+    	//
+    	// REALLOC if not enough memory
+	if (s->count + xLength >= s->capacity) { 
+        	if (s->capacity <= 0) s->capacity = s->count + xLength;       // if capacity is uninitialized (0), make it the size of the string + the chunk to be added
+		else s->capacity *= 2; 						 // if it just don't fit x2 the size
+	
+		// reallocate memory for letters of s
+	        s->letters = (char *) realloc(s->letters, s->capacity);
         
-	      // size of final string
-        size_t newSizeOfString = s->capacity*sizeof(s->letters);
-	
-	      // reallocate memory for letters of s
-        s->letters = (char *) realloc(s->letters, newSizeOfString);
-        if (s->letters == NULL){
-          printf("MEMORY ALLOCATION ERROR");
-          s->letters = NULL;
-        }
-    }
-    
-    // concatenate if pos is out of range
-    if (pos >= s->count) {
-	  // add the old letters
-      strcat(s->letters, tmpLet);
-      // remove null terminator
-      // s->letters sizeof(s->letters)-1 = ' ';
-      // add the new word x
-      strcat(s->letters, x); // x adds the null terminator as well?
-      strcat(s->letters, '\0');
-    }
-      
-    else { 
-    // move every element after pos, including the NULL terminator, "lenx" positions ahead	
-	
-    	// pointer to s->letters, for traversal
-	char* tmpAddrS = s->letters;
-	size_t count = 0;
-	do {
-      	// place the old letters until pos
-	*tmpAddrS = *tmpLet;
-	//s->letters++;
-      	// go to next item
-	count++;
-	tmpLet++;
-	tmpAddrS++;
-     	} while (count<pos);
-    	
-	// copy rest of old letters to temp string
-	char * remaining = NULL;
-	strcpy(remaining, tmpLet);
+		// if memory allocation failed
+		if (s->letters == NULL) {
+        	 	printf("MEMORY ALLOCATION ERROR");
+          		s->letters = NULL;
+        	}
+	 }	
 
-      // place the new letters at pos
-      do {
-        *tmpAddrS = *x;
-        pos++;
-        x++;
-	tmpAddrS++;
-      } while (*x);
+   	 char * traverser = s->letters; // pointer to first byte of allocated mem
+	
+
+	// Addition handling 
+	//
+    	// CONCATENATE if pos is out of range
+    	if (pos >= s->count) {
+		// add the old letters WITHOUT terminator
+		while (*tmpLet != '\0') {
+			*traverser = *tmpLet;	
+			tmpLet++;
+			traverser++;
+		}
+
+      		// add the new word x WITHOUT terminator
+		while (*x != '\0') {
+			*traverser = *x;
+			x++;
+			traverser++;
+		}
+
+	*traverser = '\0';	
+	
+		//free(x);
+		//x = NULL;
+   	}
+   	
+	// POSITIONAL ADD if pos is in range
+    	else { 
+    	// move every element after pos, including the NULL terminator, "lenx" positions ahead	
+    		size_t count = 0;
+
+		while (count<pos) {
+      			// place the old letters until pos
+			*traverser = *tmpLet;
+	
+      			// go to next item
+			count++;
+			tmpLet++;
+			traverser++;
+	     	}
+	
+		count = 0;
+
+    		char * remaining = (char *) malloc(sizeof(*tmpLet)); // problem here! *tmpLet is pointing to char and its size would be 1
+	
+		// copy rest of old letters to temp string
+		while(*tmpLet != '\0') {
+			*remaining = *tmpLet;
+			remaining++;
+			tmpLet++;
+			count++;
+		}
+	
+		remaining = remaining - count;
+	
+	      	// place the new letters at pos
+      		while (*x != '\0') {
+			*traverser = *x;
+	        	x++;
+			traverser++;
+	      	} 
    
-	// place the rest of the letters
- 	do {
-	*tmpAddrS = *remaining;
-	remaining++;
-	tmpAddrS++;
-	} while (*remaining != '\0');
+		// place the rest of the letters
+	 	while (*remaining != '\0') {
+			*traverser = *remaining;
+			remaining++;
+			traverser++;
+		}
 	
-      	// free all defined inside else loop	
-       	free(tmpAddrS);
-	      tmpAddrS = NULL;
-        free(remaining);
-      	remaining = NULL;
-      	free(tmpLet);
-      	tmpLet = NULL;
-	
-	// update string size
-      	s->count = sizeof(s->letters);
-      }
-     //deallocate x + pointers
-    free(x);
-    x = NULL;
+		// place terminator
+		*traverser = '\0';
 
-}
+      		
+       	
+			// update string size
+      	
+      
+   	 } // end else
+	s->count = sizeof(s->letters) - 1;
+} // end function
 
 // remove a chunk from a string
 void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range of elements to be deleted
@@ -157,7 +180,7 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
 
         // new pointer to letters
         char* start  = s->letters + pos;         // points to (s->letters)[pos]
-	      char* end    = s->letters + pos + chunk; // points to end of pos+chunk
+	char* end    = s->letters + pos + chunk; // points to end of pos+chunk
 
 	// move everything after [pos, pos+chunk] "chunk" registers back
 	// (s->letters)[pos] = (s->letters)[pos+chunk]
@@ -173,32 +196,24 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
 	//free(start);
 	//free(end);
    
-
-	//
-	//
-	// add possible memory reallocation here
-	//
-	//
-
-       }
+  
+	// could add possible memory reallocation here if we need to conserve mem.
+  
+    }
 
     // if pos is 0 & chunk size is greater than the actual string
-    else if ((pos == 0) && ((pos + chunk) > s->count) ) {
+    else if ((pos == 0) && (chunk > s->count)) {
         strDelete(s);
     }   
     // else ((chunkSize + pos) >= s->capacity)
     else if ((pos+chunk)> s->capacity) {
         
-        char * tmp =  s->letters + pos;
-	      *tmp = '\0';
+         char * tmp =  s->letters + pos;
+	 *tmp = '\0';
   
-    // get new size 
-   	free(tmp);
     }
-    size_t size = 0;
-    size = s->count - chunk;
-    s->count = size;
-
+    
+    s->count = strLen(s->letters);
 }
 
 void strDelete(String *s) {
@@ -208,5 +223,7 @@ void strDelete(String *s) {
 }
 
 void strPrint(String *s) {
-    printf("%s",s->letters);
+    while ((*s->letters) != '\0') {
+	    printf("%c",s->letters);
+    }
 }
