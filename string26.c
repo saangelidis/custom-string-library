@@ -133,7 +133,7 @@ void strAppend(String *s, char *x, size_t pos) {
 	
 		count = 0;
 
-    		char * remaining = (char *) malloc(sizeof(*tmpLet)); // problem here! *tmpLet is pointing to char and its size would be 1
+    		char * remaining = (char *) malloc(strLen(tmpLet));
 	
 		// copy rest of old letters to temp string
 		while(*tmpLet != '\0') {
@@ -151,21 +151,24 @@ void strAppend(String *s, char *x, size_t pos) {
 	        	x++;
 			traverser++;
 	      	} 
-   
+   		count = 0;
 		// place the rest of the letters
 	 	while (*remaining != '\0') {
 			*traverser = *remaining;
 			remaining++;
 			traverser++;
+			count++;
 		}
 	
 		// place terminator
 		*traverser = '\0';
-
-       	 } 
+		remaining = remaining - count;
+       		free(remaining); 
+	} 
 
 	// update string size
 	s->count = strLen(s->letters);
+	
 } 
 
 // remove a chunk from a string
