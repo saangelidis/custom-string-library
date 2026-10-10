@@ -90,8 +90,9 @@ void strAppend(String *s, char *x, size_t pos) {
         	}
 	 }	
 
-   	 char * traverser = s->letters; // pointer to first byte of allocated mem
-	
+   	char * traverser = s->letters; // pointer to first byte of allocated mem
+				
+	if (pos < 0) pos = s->capacity - pos;
 
 	// Addition handling 
 	//

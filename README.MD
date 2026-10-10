@@ -8,4 +8,4 @@ There is the overhead style, where you build a struct containing the string cont
 
 I was going to originally use a **singly linked list** to implement dynamic strings, however after research I realized that this is a terrible idea memory wise, since with padding, one char would go from 1 byte to 16 bytes.
 
-As of right now, I have built the generation function
+This project is complete now, and I have learned a lot by coding this without any generative AI. It took me about a month, but now I am very comfortable working with pointers and I would say I have become relatively familiarized with C.
