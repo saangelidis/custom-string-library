@@ -29,17 +29,17 @@ int main () {
 	stringInfo(newTest);
 
 	// test concat function 
-    	strAppend(newTest, " shit!",1000);
+    	strAppend(newTest, " stuff!",1000);
 	printf("\nNew string after first append:\n");
 	stringInfo(newTest);
 
     	// test inside part
-    	strAppend(newTest, "cki",2);
+    	strAppend(newTest, "ny",3);
     	printf("\nNew string after second append:\n");
 	stringInfo(newTest);
     
 	// test delete
     	strDelete(DS);
-    	printf("After deletion: %s\n",DS->letters); // should cause segfault
+    	//printf("After deletion: %s\n",DS->letters); // should cause segfault
     	return 0;
 }

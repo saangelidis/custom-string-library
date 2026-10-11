@@ -53,8 +53,8 @@ String *newStr(char* l) {
 
 void stringInfo(String *s) {
 	printf("String->letters:  %s \n",s->letters);
-  	printf("String->count: %u \n", s->count);
-	printf("String->capacity: %u\n",s->capacity);
+  	printf("String->count: %zu \n", s->count);
+	printf("String->capacity: %zu\n",s->capacity);
 }
 
 size_t strLen(char * x) {
@@ -72,89 +72,72 @@ size_t strLen(char * x) {
 // add characters
 void strAppend(String *s, char *x, size_t pos) {  
 
-    	size_t xLength = strLen(x);    // size of string x including '\0' null terminator
- 	char * tmpLet = s->letters;  // pointer to the first letter of string
-	
+    	size_t xLength = strLen(x)-1;     // size of x without terminator
+ 		
 	// Memory check
     	//
     	// REALLOC if not enough memory
 	if (s->count + xLength >= s->capacity) { 
-        	s->capacity = s->count + xLength-1;
+        	s->capacity = s->count + xLength;
+		
 		// reallocate memory for letters of s
-	        s->letters = (char *) realloc(s->letters, s->capacity);
-        
+		char * tmp = realloc(s->letters, s->capacity);
+		
 		// if memory allocation failed
-		if (s->letters == NULL) {
-        	 	printf("MEMORY ALLOCATION ERROR");
-          		s->letters = NULL;
+		if (tmp == NULL) {
+        	 	perror("MEMORY ALLOCATION ERROR");
+			return;
         	}
+		s->letters = tmp;
 	 }	
-
-   	char * traverser = s->letters; // pointer to first byte of allocated mem
-				
-	if (pos < 0) pos = s->capacity - pos;
-
+	
 	// Addition handling 
 	//
     	// CONCATENATE if pos is out of range
     	if (pos >= s->count) {
-		// add the old letters WITHOUT terminator
-		while (*tmpLet != '\0') {
-			*traverser = *tmpLet;	
-			tmpLet++;
-			traverser++;
-		}
-
-      		// add the new word x WITHOUT terminator
+		pos = s->count-1;	
+		char * traverser = s->letters + pos; // pointer to letter at pos	
+		
+		// add the new word x WITHOUT terminator
 		while (*x != '\0') {
 			*traverser = *x;
 			x++;
-			traverser++;
+			traverser++;	
 		}
-
 	*traverser = '\0';	
-	
 	}
    	
 	// POSITIONAL ADD if pos is in range
     	else { 
     	// move every element after pos, including the NULL terminator, "lenx" positions ahead	
     		size_t count = 0;
-
-		while (count<pos) {
-      			// place the old letters until pos
-			*traverser = *tmpLet;
-	
-      			// go to next item
-			count++;
-			tmpLet++;
-			traverser++;
-	     	}
-	
-		count = 0;
-
-    		char * remaining = (char *) malloc(strLen(tmpLet));
+		char * traverser = s->letters + pos; // pointer to letter at pos
+    		char * remaining = (char *) malloc(strLen(traverser));
 	
 		// copy rest of old letters to temp string
-		while(*tmpLet != '\0') {
-			*remaining = *tmpLet;
+		while(*traverser != '\0') {
+			*remaining = *traverser;
+			printf("letter copied to remaining: %c\n",*remaining);
 			remaining++;
-			tmpLet++;
+			traverser++;
 			count++;
 		}
-	
+		size_t remainingCount = count;
 		remaining = remaining - count;
-	
-	      	// place the new letters at pos
+		traverser = traverser - count;
+	      	
+		// place the new letters at pos
       		while (*x != '\0') {
 			*traverser = *x;
-	        	x++;
+	        	printf("letter copied to traverser: %c\n",*traverser);
+			x++;
 			traverser++;
 	      	} 
    		count = 0;
 		// place the rest of the letters
-	 	while (*remaining != '\0') {
+	 	while (count<remainingCount) {
 			*traverser = *remaining;
+			printf("letter copied to traverser: %c\n",*traverser);
 			remaining++;
 			traverser++;
 			count++;
@@ -162,20 +145,17 @@ void strAppend(String *s, char *x, size_t pos) {
 	
 		// place terminator
 		*traverser = '\0';
-		remaining = remaining - count;
+		remaining = remaining - remainingCount;
        		free(remaining); 
 	} 
 
 	// update string size
 	s->count = strLen(s->letters);
-	
 } 
 
 // remove a chunk from a string
 void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range of elements to be deleted
-    
-    // CHECK if pos negative, pos = s->capacity - pos
-    if (pos < 0) pos = s->capacity-pos;
+
 
     // CHECK if chunk size at pos is less than the rest of the string
     //
