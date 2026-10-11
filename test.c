@@ -40,6 +40,8 @@ int main () {
     
 	// test delete
     	strDelete(DS);
-    	//printf("After deletion: %s\n",DS->letters); // should cause segfault
+	strDelete(newTest);
+   
+	//printf("After deletion: %s\n",DS->letters); // should cause segfault
     	return 0;
 }

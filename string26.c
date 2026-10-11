@@ -117,7 +117,6 @@ void strAppend(String *s, char *x, size_t pos) {
 		// copy rest of old letters to temp string
 		while(*traverser != '\0') {
 			*remaining = *traverser;
-			printf("letter copied to remaining: %c\n",*remaining);
 			remaining++;
 			traverser++;
 			count++;
@@ -129,7 +128,6 @@ void strAppend(String *s, char *x, size_t pos) {
 		// place the new letters at pos
       		while (*x != '\0') {
 			*traverser = *x;
-	        	printf("letter copied to traverser: %c\n",*traverser);
 			x++;
 			traverser++;
 	      	} 
@@ -137,7 +135,6 @@ void strAppend(String *s, char *x, size_t pos) {
 		// place the rest of the letters
 	 	while (count<remainingCount) {
 			*traverser = *remaining;
-			printf("letter copied to traverser: %c\n",*traverser);
 			remaining++;
 			traverser++;
 			count++;
