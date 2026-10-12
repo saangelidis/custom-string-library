@@ -60,10 +60,10 @@ void stringInfo(String *s) {
 size_t strLen(char * x) {
 // FUTURE: implement bool variable to include or not include NULL term
 	size_t length = 0;
-	do {
+	while (*x != '\0') {
 		length++;
 		x++;
-	} while (*x != '\0');
+	};
 	length++;
 	
 	return length;
@@ -89,7 +89,7 @@ void strAppend(String *s, char *x, size_t pos) {
 			return;
         	}
 		s->letters = tmp;
-	 }	
+	}	
 	
 	// Addition handling 
 	//
@@ -155,9 +155,9 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
 
 
     // CHECK if chunk size at pos is less than the rest of the string
-    //
+
     // AKA - is the chunk smaller than the word & is pos bigger than 0
-    if (((pos + chunk) < s->capacity) && pos > 0) {
+    if ((pos + chunk) < s->count) {
 
         // new pointer to letters
         char* start  = s->letters + pos;         // points to (s->letters)[pos]
@@ -181,12 +181,10 @@ void strRemoveChunk(String *s, size_t pos, size_t chunk) { // chunk is the range
     else if ((pos == 0) && (chunk > s->count)) {
         strDelete(s);
     }   
-    // else ((chunkSize + pos) >= s->capacity)
-    else if ((pos+chunk)> s->capacity) {
-        
+    // else ((chunkSize + pos) >= s->count)
+    else if ((pos+chunk)> s->count) {
          char * tmp =  s->letters + pos;
-	 *tmp = '\0';
-  
+	 *tmp = '\0';  
     }
     
     s->count = strLen(s->letters);
